@@ -1,1 +1,1 @@
-web: export NODE_ENV=dev && node app.js
+web: node app.js

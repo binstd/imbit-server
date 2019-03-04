@@ -8,16 +8,16 @@ import article_spider from './models/article.spider.model';
 import tags_spider from './models/tags.spider.model';
 import dapp_abi from './models/dapp.abi.model';
 //载入配置文件
-import prd_config from './utils/prdConfig'
+// import prd_config from './utils/prdConfig'
 
 //判断是否载入正式环境配置
-if (Object.keys(prd_config).length == 0) { 
-    //prd_config为空
-    console.log('node_env is:', process.env.NODE_ENV);
-} else {
-    //prd_config不为空
-    console.log(prd_config);
-}
+// if (Object.keys(prd_config).length == 0) { 
+
+//     console.log('node_env is:', process.env.NODE_ENV);
+// } else {
+
+//     console.log(prd_config);
+// }
 
 const sequelize = new Sequelize('d3iaad1gg3dn66', 'shfwkmwouxjplm', '630dfc0a4896ceeceeda9608f3fc972a0cc2a9587eb0a71bb37f121cfbc73116', {
     host: 'ec2-54-235-159-101.compute-1.amazonaws.com',

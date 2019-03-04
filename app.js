@@ -7,6 +7,7 @@ require("babel-polyfill");   //引入这个文件babel-polyfill很重要，否�
 const Koa = require('koa')
 const app = new Koa()
 const router = require('./router');
+const PORT = process.env.PORT || 5000
 //console.log('\n \n env: \n',app.env);
 
 //加载中间件
@@ -14,6 +15,20 @@ const middleware = require('./middleware')
 middleware(app)
 
 router(app);
-app.listen(3000, () => {
-  console.log('server is running at http://localhost:3000')
+app.listen(PORT, () => {
+  console.log(`server is running at http://localhost:${PORT}`)
 })
+
+
+
+
+// const express = require('express')
+// const path = require('path')
+// const PORT = process.env.PORT || 5000
+
+// express()
+//   .use(express.static(path.join(__dirname, 'public')))
+//   .set('views', path.join(__dirname, 'views'))
+//   .set('view engine', 'ejs')
+//   .get('/', (req, res) => res.render('pages/index'))
+//   .listen(PORT, () => console.log(`Listening on ${ PORT }`))

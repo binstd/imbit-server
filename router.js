@@ -34,6 +34,9 @@ module.exports = (app) => {
     //修改用户信息  + koajwt({ secret: config.secret }),
     router.patch('/api/users/:userId',  ApiController.patchapiuser)
     
+    router.get('/api/virify/massegecode',  ApiController.getVerifyMassegeCode)
+    
+
     // ‘/api/usercontact’ 提交联系人 
     // router.post('/api/user/contact', ApiController.postApiUsercontact)
 

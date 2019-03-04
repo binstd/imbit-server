@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 import Web3 from 'web3';
 import axios from 'axios';
 
+
+const moment = require('moment');
 const crypto = require('crypto');
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
@@ -157,6 +159,7 @@ class ApiController {
         const telephone = ctx.query.telephone;
         //活动码
         const inviteCode = 'MK20181214003';
+
         //时间戳
         //const timestamp = '4343434343';
         //签名
@@ -183,6 +186,33 @@ class ApiController {
         
         ctx.body = response.data
         // ctx.apidata({response}); 
+    }
+
+    async getVerifyMassegeCode(ctx, next) {
+        let rows = {};
+        let paramMsg = {};
+        rows['code'] = Math.random().toString().slice(-6);
+        console.log(rows);
+        var today = moment();
+        var time = today.format('YYYYMMDDHHmmss'); /*现在的年*/
+        // YYYY-MM-DD HH:mm:ss
+        //   console.log('time:', time);
+        let password = 'jhD72SVM';
+        let md5password = crypto.createHash('md5').update(password).digest('hex');
+        let msgpass = crypto.createHash('md5').update(md5password + time).digest('hex');
+        console.log('msgpass:', msgpass);
+        paramMsg['username'] = "proginn1";
+        paramMsg['tkey'] = time;
+        paramMsg['password'] = msgpass;
+        paramMsg['mobile'] = ctx.query.telephone.toString(); 
+        // paramMsg['mobile'] = req.query.telephone;
+        paramMsg['content'] = rows['code'];
+        paramMsg['productid'] = '170831';
+        console.log(paramMsg);
+        let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
+            params: paramMsg
+        });
+        ctx.body = rows;
     }
 }
 

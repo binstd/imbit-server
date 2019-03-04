@@ -1,12 +1,9 @@
 import Sequelize from 'sequelize';
 
 import api_users from './models/user.model';
-import user_dapp_info from './models/dapp.info.model'
-import user_contact from './models/user.contact.model'
-import more_transfer from './models/moretransfer.model';
-import article_spider from './models/article.spider.model';
-import tags_spider from './models/tags.spider.model';
-import dapp_abi from './models/dapp.abi.model';
+
+
+
 //载入配置文件
 // import prd_config from './utils/prdConfig'
 
@@ -38,10 +35,7 @@ const sequelize = new Sequelize('d3iaad1gg3dn66', 'shfwkmwouxjplm', '630dfc0a489
 
 // Init all models
 api_users(sequelize);
-user_dapp_info(sequelize);
-user_contact(sequelize);
-more_transfer(sequelize);
-dapp_abi(sequelize);
+
 sequelize.sync();
 
 //爬虫表设置
@@ -67,9 +61,9 @@ const dbspider = new Sequelize('d3iaad1gg3dn66', 'shfwkmwouxjplm', '630dfc0a4896
     logging: console.log
 });
 
-article_spider(dbspider);
-tags_spider(dbspider);
+// article_spider(dbspider);
+// tags_spider(dbspider);
 //article_spider.sync({alter: true})
-dbspider.sync();
+// dbspider.sync();
 
 export {sequelize, dbspider};

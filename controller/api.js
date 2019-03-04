@@ -10,7 +10,7 @@ import axios from 'axios';
 const crypto = require('crypto');
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
-const user_dapp_info = sequelize.models.user_dapp_info;
+
 const user_contact = sequelize.models.user_contact;
 
 
@@ -57,7 +57,6 @@ class ApiController {
         }).then(
             api_users =>
                 new Promise((resolve, reject) =>
-                    //jwt.sign将一些信息记录到jwt中
                     jwt.sign(
                         {
                             payload: {
@@ -65,7 +64,7 @@ class ApiController {
                                 publicAddress
                             }
                         },
-                        config.secret, //私钥是非常关键,有了它jwt才能解析
+                        config.secret,   //私钥是非常关键,有了它jwt才能解析
                         null,
                         (err, token) => {
                             if (err) {
@@ -85,8 +84,14 @@ class ApiController {
      * @api {post} /api/users 提交用户信息
      */
     async insertapiuser(ctx, next) {
-        console.log('request.body:', ctx.request.body);
-        let resultData = await api_users.create(ctx.request.body); 
+        // console.log('\n \n \n request.body===:', ctx.request.body);
+        let resultData  = ''
+        try {
+            resultData = await api_users.create(ctx.request.body); 
+        }catch (error) {
+            resultData  = { code:1200, message:'添加失败' }
+        }
+
         ctx.send(resultData);
     }
 
@@ -145,63 +150,9 @@ class ApiController {
 
   
 
-    /**
-     * 
-     * @api {get} /api/dapp/contract/:publicaddress 获取指定地址的dapp列表
-     * @apiName 获取指定地址的dapp列表
-     * 
-     * 
-     * @apiSuccess (200) {type} name  获取指定地址的dapp列表
-     * 
-     * 
-     * @apiParamExample  {type} Request-Example:
-     *  api/dapp/0x210efed6635905c7c7c98b20d24747c723dd4ebe
-     * 
-     * [
-     *      {
-     *           "id": 3,
-     *           "publicAddress": "0x210efed6635905c7c7c98b20d24747c723dd4ebe",
-     *          "dappName": "111",
-     *           "contractAddress": "0x090652a4aecee28a7ae766c5bd51851830185664",
-     *          "contractInfo": null,
-     *           "dappChain": null,
-     *           "createdAt": "2018-09-14T06:33:05.000Z",
-     *           "updatedAt": "2018-09-14T06:33:05.000Z"
-     *       }
-     * ]
-     * @apiSuccessExample {type} Success-Response:
-     * {
-     *     property : value
-     * }
-     * 
-     */
-    async dappcontract(ctx, next) {
-        let resultData = await user_dapp_info.findAll({ raw: true, where: { publicAddress: ctx.params.publicaddress} });
-        let returnData = [];
-        // console.log('eth_ropsten:',config.rpcurl[ctx.query.chain]);
-        let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
-        console.log('resultData',resultData);
-        for(let item of resultData) {     
-            if(item['contractAddress'] == null && item['dappChain']== ctx.query.chain){
-                
-                console.log(item);
-                let transactionInfo = await web3.eth.getTransactionReceipt(item['txHash']);
-                item['contractAddress'] = transactionInfo['contractAddress'];
-                // console.log(transactionInfo['contractAddress']);
-                returnData.push(item); 
-            }     
-        } 
+  
 
-        ctx.send(returnData)
-    }
-
-    /**
-     *   @api {post} /api/dapp 提交新dapp
-     */
-    async postDapp(ctx, next) { 
-        ctx.body = await user_dapp_info.create(ctx.request.body);   
-    }
-    
+  
     async getCoffeeTicket(ctx, next) {
         const telephone = ctx.query.telephone;
         //活动码

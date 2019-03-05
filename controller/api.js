@@ -199,7 +199,7 @@ class ApiController {
         let password = 'jhD72SVM';
         let md5password = crypto.createHash('md5').update(password).digest('hex');
         let msgpass = crypto.createHash('md5').update(md5password + time).digest('hex');
-        // console.log('msgpass:', msgpass);
+  
         paramMsg['username'] = "proginn1";
         paramMsg['tkey'] = time;
         paramMsg['password'] = msgpass;
@@ -211,9 +211,9 @@ class ApiController {
         let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
             params: paramMsg
         });
-   
-        console.log('response => ', response);
-        // const result = response.data.split(",");
+        console.log('time => ', paramMsg['tkey']);
+        console.log('response => ', response.data);
+  
         ctx.body = rows;
         // console.log(':::::=>>>',result[0]);
         // if(result[0] == 1){

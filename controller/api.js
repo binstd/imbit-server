@@ -192,15 +192,14 @@ class ApiController {
         let rows = {};
         let paramMsg = {};
         rows['code'] = Math.random().toString().slice(-6);
-        console.log(rows);
+
         var today = moment();
         var time = today.format('YYYYMMDDHHmmss'); /*现在的年*/
-        // YYYY-MM-DD HH:mm:ss
-        //   console.log('time:', time);
+
         let password = 'jhD72SVM';
         let md5password = crypto.createHash('md5').update(password).digest('hex');
         let msgpass = crypto.createHash('md5').update(md5password + time).digest('hex');
-        console.log('msgpass:', msgpass);
+        // console.log('msgpass:', msgpass);
         paramMsg['username'] = "proginn1";
         paramMsg['tkey'] = time;
         paramMsg['password'] = msgpass;
@@ -208,19 +207,20 @@ class ApiController {
         // paramMsg['mobile'] = req.query.telephone;
         paramMsg['content'] = rows['code'];
         paramMsg['productid'] = '170831';
-        console.log(paramMsg);
+        // console.log(paramMsg);
         let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
             params: paramMsg
         });
    
-
-        const result = response.data.split(",");
+        console.log('response => ', response);
+        // const result = response.data.split(",");
+        ctx.body = rows;
         // console.log(':::::=>>>',result[0]);
-        if(result[0] == 1){
-            ctx.body = rows;
-        }else{
-            ctx.body =  result;
-        }
+        // if(result[0] == 1){
+        //     ctx.body = rows;
+        // }else{
+        //     ctx.body =  result;
+        // }
        
     }
 }

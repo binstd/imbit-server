@@ -212,7 +212,16 @@ class ApiController {
         let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
             params: paramMsg
         });
-        ctx.body = rows;
+   
+
+        const result = response.data.split(",");
+        // console.log(':::::=>>>',result[0]);
+        if(result[0] == 1){
+            ctx.body = rows;
+        }else{
+            ctx.body =  result;
+        }
+       
     }
 }
 

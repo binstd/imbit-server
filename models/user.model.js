@@ -8,7 +8,7 @@ export default function(sequelize) {
       defaultValue: () => Math.floor(Math.random() * 10000) // Initialize with a random nonce
     },
     publicAddress: {
-      allowNull: false,
+    //   allowNull: false,
       type: Sequelize.STRING,
       unique: true,
       validate: { isLowercase: true }

@@ -98,11 +98,23 @@ class ApiController {
     }
 
     //根据publicAddress获取用户信息
-    // api/users?publicAddress=
+    // api/users?publicAddress=   |  api/users?telephone=
     async getapiuser(ctx, next) {
-        console.log("router.get('/users', async (ctx, next) => {");
-        ctx.body = await api_users.findAll({ where: { publicAddress: ctx.query.publicAddress } }); 
+        
+        if(ctx.query.publicAddress) {
+            ctx.body = await api_users.findAll({ where: { publicAddress: ctx.query.publicAddress } }); 
+        }
+
+       if(ctx.query.telephone) {
+            ctx.body = await api_users.findAll({ where: { telephone: ctx.query.telephone } }); 
+        }
     }
+
+    //  // api/users?telephone=
+    //  async getApiUserByTelephone(ctx, next) {
+    //     // console.log("router.get('/users', async (ctx, next) => {");
+    //     ctx.body = await api_users.findAll({ where: { telephone: ctx.query.telephone } }); 
+    // }
 
     /**
      *   @api {get} /api/users 获取用户信息
@@ -122,7 +134,6 @@ class ApiController {
      *   @api {patch} /api/users 设置用户信息
      */
     async patchapiuser(ctx, next) {
-
         ctx.body = await api_users.findById(ctx.params.userId)
         .then(api_users => {
             Object.assign(api_users, ctx.request.body);
@@ -150,20 +161,11 @@ class ApiController {
         ctx.body = await user_contact.create(ctx.request.body); 
     }
 
-  
-
-  
-
-  
+    
     async getCoffeeTicket(ctx, next) {
         const telephone = ctx.query.telephone;
         //活动码
         const inviteCode = 'MK20181214003';
-
-        //时间戳
-        //const timestamp = '4343434343';
-        //签名
-        // const signature = '434343434';
 
         let param = {}; 
         param['mobile'] = ctx.query.telephone.toString(); //telephone; 

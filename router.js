@@ -24,13 +24,17 @@ module.exports = (app) => {
     
     //查询用户信息(公用)
     router.get('/api/users', ApiController.getapiuser)
+    
 
+     //查询用户信息(公用)
+    //  router.get('/api/users', ApiController.getApiUserByTelephone)
     //提交用户信息
     router.post('/api/users', ApiController.insertapiuser)
 
     //获取用户信息
     router.get('/api/users/:userId', koajwt({ secret: config.secret }), ApiController.apiuserinfo)
     
+
     //修改用户信息  + koajwt({ secret: config.secret }),
     router.patch('/api/users/:userId',  ApiController.patchapiuser)
     

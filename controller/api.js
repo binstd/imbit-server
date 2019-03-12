@@ -66,7 +66,7 @@ class ApiController {
                                 publicAddress
                             }
                         },
-                        config.secret,   //私钥是非常关键,有了它jwt才能解析
+                        config.secret,   
                         null,
                         (err, token) => {
                             if (err) {
@@ -78,6 +78,31 @@ class ApiController {
                         }
                     )
                 )
+        );
+        ctx.body = { accessToken };
+    }
+
+    //获取jwt token
+    async getJwt(ctx, next) {
+        let accessToken = await new Promise((resolve, reject) =>
+                    jwt.sign(
+                        {
+                            payload: {
+                                id: ctx.query.uid,
+                                publicAddress:ctx.query.publicAddress
+                            }
+                        },
+                        config.secret,   
+                        null,
+                        (err, token) => {
+                            if (err) {
+                                console.log('err \n ', err);
+                                return reject(err);
+                            }
+                            console.log('token \n ', token);
+                            return resolve(token);
+                        }
+                    )
         );
         ctx.body = { accessToken };
     }
@@ -110,12 +135,7 @@ class ApiController {
         }
     }
 
-    //  // api/users?telephone=
-    //  async getApiUserByTelephone(ctx, next) {
-    //     // console.log("router.get('/users', async (ctx, next) => {");
-    //     ctx.body = await api_users.findAll({ where: { telephone: ctx.query.telephone } }); 
-    // }
-
+    
     /**
      *   @api {get} /api/users 获取用户信息
      */

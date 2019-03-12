@@ -40,7 +40,7 @@ module.exports = (app) => {
     
     router.get('/api/virify/massegecode',  ApiController.getVerifyMassegeCode)
     
-
+    router.get('/api/jwt',  ApiController.getJwt)
     // ‘/api/usercontact’ 提交联系人 
     // router.post('/api/user/contact', ApiController.postApiUsercontact)
 
